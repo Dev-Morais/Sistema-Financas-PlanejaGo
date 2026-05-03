@@ -6,7 +6,10 @@
         <title> Sistema PlanejaGo </title>
 
     </head>
-    <body class="flex flex-col w-full h-screen justify-center items-center">
+    
+    <body class= "w-full h-screen  ">
         <p class= "font-roboto font-bold">Projeto Configurado</p>
+        @yield('content')
+
     </body>
 </html>

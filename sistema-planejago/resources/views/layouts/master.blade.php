@@ -7,8 +7,8 @@
 
     </head>
     
-    <body class= "w-full h-screen  ">
-        <p class= "font-roboto font-bold">Projeto Configurado</p>
+    <body class= "w-full h-screen bg-amber-100 ">
+
         @yield('content')
 
     </body>

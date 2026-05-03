@@ -27,12 +27,13 @@
 
         <div class="flex flex-col w-fit border rounded-sm p-4 gap-4">
             @csrf    
-
+            <p>Email </p>
             <input type="text" name="email" value="" class="border rounded" >
             @error('email')
                 <span>{{ $message }}</span>
             @enderror
-
+            
+            <p>Senha </p>
             <input type="password" name="password" value="" class="border rounded" >
             @error('password')
                 <span>{{ $message }}</span>

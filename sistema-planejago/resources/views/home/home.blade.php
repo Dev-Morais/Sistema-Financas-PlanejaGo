@@ -1,23 +1,19 @@
 @extends('layouts.master')
 
 @section('content')
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        
-        <title> Sistema PlanejaGo </title>
 
-    </head>
-    <body class= "w-full h-screen  ">
+        <body class= "w-full h-screen  ">
         
         <div class="flex gap-4 items-center">
         
         @guest
             <div class= "flex justify-between w-full">
                 <h2>Projeto Configurado </h2>
-                <a href="{{ route('login.index') }}" class="bg-purple-300 p-2 border rounded-sm">Login</a>
-            </div>
+                <div class="flex gap-2 mt-2 mr-2 " >
+                    <a href="{{ route('user.create') }}" class="bg-white p-2 border rounded-sm">Registrar-se</a>
+                    <a href="{{ route('login.index') }}" class="bg-purple-300 p-2 border rounded-sm">Login</a>
+                </div>
+            </div>            
         @endguest
 
         @auth
@@ -33,5 +29,4 @@
         @yield('content')
     </main>
 
-    </body>
-</html>
+@endsection

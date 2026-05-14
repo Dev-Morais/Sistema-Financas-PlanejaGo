@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        
-        <title> Sistema PlanejaGo </title>
+@extends('shared.layout')
 
-    </head>
-    
-    <body class= "w-full h-screen bg-amber-100 ">
+@section('conteudo')
+    <h1 class="text-2xl font-bold p-4">Projeto Configurado</h1>
+@endsection
 
-        @yield('content')
-
-    </body>
-</html>

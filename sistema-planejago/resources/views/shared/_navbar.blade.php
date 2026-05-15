@@ -19,12 +19,16 @@
       </div>
 
       <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-
         <div class="flex shrink-0 items-center">
           <!--Titulo principal -->
-          <a href="#" class="text-lg font-bold text-[#FFA051] hover:text-white">PlanejaGo</a>
+          <a href="/" class="text-lg font-bold text-[#FFA051] hover:text-white">PlanejaGo</a>
         </div>
+          
+        
+        
 
+        
+        
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
             <!-- Area dos Links do Menu -->
@@ -36,7 +40,23 @@
       </div>
 
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-
+        
+        @guest
+          @if(Route::is('user.create') || Route::is('login.index'))
+            <a href="{{ route('home') }}" class="bg-white p-2 border rounded-sm">Cancelar</a>
+          @else
+          <div class="flex space-x-2">
+            
+            <a href="{{ route('user.create') }}" class="bg-white p-2 border rounded-sm">Registrar-se</a>
+            
+            <a href="{{ route('login.index') }}" class="bg-purple-300 p-2 border rounded-sm">Login</a>
+          </div>
+          @endif
+        @endguest
+          
+        @auth
+          
+        
       <!-- Notificações -->
         <button type="button" class="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
           <span class="absolute -inset-1.5"></span>
@@ -61,25 +81,32 @@
           <!-- Menu Responsivo -->
           <el-menu anchor="bottom end" popover class="w-48 origin-top-right rounded-md bg-gray-800 py-1 outline -outline-offset-1 outline-white/10 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
             <a href="#" class="block px-4 py-2 text-sm text-gray-300 focus:bg-white/5 focus:outline-hidden">Ver Perfil</a>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-300 focus:bg-white/5 focus:outline-hidden">Deslogar</a>
+            <form action="{{ route('login.destroy') }}" method="POST">
+                @csrf
+                <button class="block px-4 py-2 text-sm text-gray-300 focus:bg-white/5 focus:outline-hidden">Deslogar</button>
+            </form>
           </el-menu>
 
         </el-dropdown>
       </div>
+      @endauth
+
     </div>
   </div>
 
   <!-- Menu Responsivo -->
-  <el-disclosure id="mobile-menu" hidden class="block sm:hidden">
+  @auth
+    <el-disclosure id="mobile-menu" hidden class="block sm:hidden">
 
-    <div class="space-y-1 px-2 pt-2 pb-3">
+      <div class="space-y-1 px-2 pt-2 pb-3">
 
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white underline decoration-2 underline-offset-4">Lançamentos</a>
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white">Relatórios</a>
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white">Calculadora</a>
+        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white underline decoration-2 underline-offset-4">Lançamentos</a>
+        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white">Relatórios</a>
+        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white">Calculadora</a>
 
-    </div>
-  </el-disclosure>
+      </div>
+    </el-disclosure>
+  @endauth
   <!------------>
   
 </nav>

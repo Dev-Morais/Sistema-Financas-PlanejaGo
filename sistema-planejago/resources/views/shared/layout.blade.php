@@ -6,12 +6,12 @@
     <title>PlanejaGo</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 
     @include('shared._navbar')
 
-    <main class="container">
-        @yield('conteudo')
+    <main class="flex-1 flex flex-col w-full">
+        @yield('content')
     </main>
     
 </body>

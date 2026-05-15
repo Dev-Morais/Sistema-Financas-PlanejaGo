@@ -2,8 +2,6 @@
 
 @section('content')
 
-    <a href="{{ route('home') }}">Home</a>
-
     @if(session()->has('success'))
         {{session()->get('success')}} 
     @endif
@@ -18,7 +16,8 @@
         
         @else 
 
-<div class="flex w-full min-h-screen justify-center items-center ">
+        
+<div class="flex-1 flex flex-col justify-center  items-center w-full">
     <form action="{{ route('login.store') }} " method='POST' >
         
         @error('error')
@@ -48,5 +47,5 @@
     </form>
 </div>    
         
-    @endif
+@endif
 @endsection

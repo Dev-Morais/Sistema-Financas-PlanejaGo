@@ -34,7 +34,7 @@
             <!-- Area dos Links do Menu -->
             <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-white/5 hover:text-white underline decoration-2 underline-offset-4">Lançamentos</a>
             <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-white/5 hover:text-white">Relatórios</a>
-            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-white/5 hover:text-white">Calculadora</a>
+            <a href="/calculadora" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-white/5 hover:text-white">Calculadora</a>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@
 
         <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white underline decoration-2 underline-offset-4">Lançamentos</a>
         <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white">Relatórios</a>
-        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white">Calculadora</a>
+        <a href="/calculadora" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/5 hover:text-white">Calculadora</a>
 
       </div>
     </el-disclosure>

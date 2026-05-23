@@ -30,7 +30,13 @@ Route::middleware('auth')->group(function () {
     }
 });
 
-// 4. ROTA DA CALCULADORA ISOLADA (Totalmente segura contra erros de Controller)
 Route::get('/calculadora', function () {
+    // Verifica se o usuário está logado
+    if (!auth()->check()) {
+        // Se não estiver, redireciona para a tela de login (ajuste o caminho se necessário)
+        return redirect()->route('login.index');
+    }
+
+    // Se estiver logado, libera o acesso
     return view('home.calculadora');
 })->name('calculadora');

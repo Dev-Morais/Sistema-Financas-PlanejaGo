@@ -8,12 +8,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span id="toast-mensagem">Mensagem aqui</span>
+        <span id="toast-mensagem"></span>
     </div>
 </div>
 
 <div class="container mx-auto p-4 md:p-6 min-h-screen bg-gray-50 text-gray-800">
-    
     <div class="max-w-6xl mx-auto">
         <h1 class="text-2xl font-bold text-[#2C2966] mb-6">Calculadora</h1>
 
@@ -51,7 +50,6 @@
                             <button type="button" onclick="abrirModal('modalDespesa')" class="text-[#4E44CE] hover:text-[#3b33a3] cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></button>
                         </div>
                         <div class="flex justify-center space-x-4 text-xs font-semibold text-gray-500 mb-6"><span>Total de Juros: <strong class="text-gray-700" id="res_total_juros">R$ 0,00</strong></span><span>Rendimento: <strong class="text-gray-700" id="res_rendimento">0%</strong></span></div>
-                        
                         <div class="h-48 w-full relative mt-4">
                             <canvas id="graficoJuros"></canvas>
                         </div>
@@ -125,7 +123,9 @@
 </div>
 
 <script>
-    let meuGrafico = null; // Guarda a instância do gráfico para podermos resetar a cada cálculo
+    let meuGrafico = null;
+    let expressaoComum = '';
+    let calculoRealizado = false;
 
     function abrirModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function fecharModal(id) { document.getElementById(id).classList.add('hidden'); }
@@ -147,7 +147,6 @@
         }, 3000);
     }
 
-    // LÓGICA DA CALCULADORA DE JUROS COM ATUALIZAÇÃO DO GRÁFICO REAL
     function calcularJuros() {
         const C = parseFloat(document.getElementById('valor_inicial').value) || 0;
         let i = parseFloat(document.getElementById('taxa_juros').value) || 0;
@@ -161,7 +160,6 @@
             return;
         }
 
-        // Normalização do tempo
         let tempoOriginal = t; 
         if (tempoTaxa === 'mes' && tempoPeriodo === 'anos') t = t * 12;
         else if (tempoTaxa === 'ano' && tempoPeriodo === 'meses') t = t / 12;
@@ -170,15 +168,12 @@
         let totalJuros = 0;
         const taxaPercentual = i / 100;
 
-        // Arrays para gerar a evolução do gráfico passo a passo
         let labelsGrafico = [];
         let dadosGrafico = [];
 
         if (tipoJuros === 'simples') {
             totalJuros = C * taxaPercentual * t;
             valorFinal = C + totalJuros;
-
-            // Monta os pontos da linha do gráfico simples
             for (let j = 0; j <= tempoOriginal; j++) {
                 labelsGrafico.push(`${j}º`);
                 let tPasso = tempoPeriodo === 'anos' && tempoTaxa === 'mes' ? j * 12 : j;
@@ -188,8 +183,6 @@
         } else {
             valorFinal = C * Math.pow((1 + taxaPercentual), t);
             totalJuros = valorFinal - C;
-
-            // Monta os pontos da curva do gráfico composto
             for (let j = 0; j <= tempoOriginal; j++) {
                 labelsGrafico.push(`${j}º`);
                 let tPasso = tempoPeriodo === 'anos' && tempoTaxa === 'mes' ? j * 12 : j;
@@ -204,51 +197,20 @@
         document.getElementById('res_rendimento').innerText = `${((totalJuros / C) * 100).toFixed(1)}%`;
         document.getElementById('modal_despesa_valor').value = formatarMoeda(valorFinal);
 
-        // Renderiza ou Atualiza o Gráfico Real usando Chart.js
         const ctx = document.getElementById('graficoJuros').getContext('2d');
-        if (meuGrafico) {
-            meuGrafico.destroy(); // Apaga o gráfico antigo para criar o novo sem sobrepor
-        }
-
+        if (meuGrafico) meuGrafico.destroy();
         meuGrafico = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: labelsGrafico,
-                datasets: [{
-                    label: 'Evolução do Patrimônio',
-                    data: dadosGrafico,
-                    borderColor: '#4E44CE',
-                    backgroundColor: 'rgba(78, 68, 206, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.3, // Deixa a linha curvada bonitinha
-                    pointBackgroundColor: '#4E44CE'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: {
-                        grid: { color: '#E5E7EB' },
-                        ticks: { callback: (v) => 'R$ ' + v.toFixed(0) }
-                    },
-                    x: { grid: { display: false } }
-                }
-            }
+            data: { labels: labelsGrafico, datasets: [{ label: 'Evolução do Patrimônio', data: dadosGrafico, borderColor: '#4E44CE', backgroundColor: 'rgba(78, 68, 206, 0.1)', borderWidth: 3, fill: true, tension: 0.3, pointBackgroundColor: '#4E44CE' }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#E5E7EB' }, ticks: { callback: (v) => 'R$ ' + v.toFixed(0) } }, x: { grid: { display: false } } } }
         });
     }
 
-    // LÓGICA DA CALCULADORA COMUM
-    let expressaoComum = '';
-    let calculoRealizado = false;
-
     function addComum(caractere) {
-        if (calculoRealizado && !['+', '-', '*', '/', '**'].includes(caractere)) {
+        if (calculoRealizado && /[0-9]/.test(caractere)) {
             expressaoComum = '';
+            calculoRealizado = false;
         }
-        calculoRealizado = false;
         expressaoComum += caractere;
         document.getElementById('comum_expressao').innerText = expressaoComum.replace(/\*\*/g, '^');
     }
@@ -265,7 +227,6 @@
             if (!expressaoComum || /[\+\-\*\/]$/.test(expressaoComum)) return;
             const resultado = eval(expressaoComum);
             if (resultado === undefined || isNaN(resultado)) return;
-
             document.getElementById('comum_resultado').innerText = resultado;
             document.getElementById('modal_receita_valor').value = resultado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             expressaoComum = resultado.toString();
@@ -276,11 +237,9 @@
         }
     }
 
-    // CONTROLE DO TECLADO
     document.addEventListener('keydown', function(event) {
         if (!document.getElementById('tab-comum').checked) return;
-        if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT' || event.target.tagName === 'TEXTAREA') return;
-
+        if (['INPUT', 'SELECT', 'TEXTAREA'].includes(event.target.tagName)) return;
         const key = event.key;
         if (/[0-9]/.test(key)) addComum(key);
         else if (['+', '-', '.', '(', ')'].includes(key)) addComum(key);
@@ -292,7 +251,9 @@
         else if (key === 'Backspace' || key === 'Escape' || key.toLowerCase() === 'c') limparComum();
     });
 
-    // SISTEMA DE ALTERNÂNCIA DA BOLINHA AMARELA
+    document.getElementById('tab-juros').addEventListener('change', gerenciarBolinhas);
+    document.getElementById('tab-comum').addEventListener('change', gerenciarBolinhas);
+
     function gerenciarBolinhas() {
         const dotJuros = document.getElementById('dot-juros');
         const dotComum = document.getElementById('dot-comum');
@@ -304,10 +265,7 @@
             dotJuros.classList.remove('bg-yellow-400');
         }
     }
-    document.getElementById('tab-juros').addEventListener('change', gerenciarBolinhas);
-    document.getElementById('tab-comum').addEventListener('change', gerenciarBolinhas);
 
-    // Inicializa o gráfico zerado ao carregar a página pela primeira vez
     window.addEventListener('DOMContentLoaded', () => {
         const ctx = document.getElementById('graficoJuros').getContext('2d');
         meuGrafico = new Chart(ctx, {

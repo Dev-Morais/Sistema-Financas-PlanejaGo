@@ -1,6 +1,4 @@
-@extends('layouts.master')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="min-h-[calc(100vh-4rem)] bg-white flex flex-col justify-center items-center px-6 py-12 md:px-16 lg:px-24">
     
     <div class="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-12">
@@ -28,9 +26,10 @@
         </div>
 
         <div class="w-full md:w-1/2 flex justify-center items-center">
-            <img src="{{ asset('assets/images/home-illustration.png') }}" alt="Ilustração PlanejaGo" class="w-full max-w-md md:max-w-lg object-contain drop-shadow-sm">
+            <img src="<?php echo e(asset('assets/images/home-illustration.png')); ?>" alt="Ilustração PlanejaGo" class="w-full max-w-md md:max-w-lg object-contain drop-shadow-sm">
         </div>
 
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Projetos\Sistema-Financas-PlanejaGo\sistema-planejago\resources\views/home/home.blade.php ENDPATH**/ ?>

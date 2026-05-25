@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LancamentoController;
 use App\Http\Controllers\UserController;
 
 // 1. Tela de apresentação / Landing Page (Pública)
@@ -36,7 +37,19 @@ Route::get('/calculadora', function () {
         // Se não estiver, redireciona para a tela de login (ajuste o caminho se necessário)
         return redirect()->route('login.index');
     }
-
-    // Se estiver logado, libera o acesso
+  
     return view('home.calculadora');
 })->name('calculadora');
+
+
+    Route::get('/lancamentos', [LancamentoController::class, 'index'])->name('user.lancamentos');
+
+    Route::post('/lancamentos/despesa', [LancamentoController::class, 'criaDespesa'])->name('lancamentos.criaDespesa');
+
+    Route::post('/lancamentos/atualizar-status/{id}', [LancamentoController::class, 'atualizarStatus'])->name('lancamentos.atualizarStatus');
+
+    Route::post('/lancamentos/receita', [LancamentoController::class, 'criaReceita'])->name('lancamentos.criaReceita');
+    
+  
+
+  

@@ -3,31 +3,42 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['descricao', 'valor', 'data_criacao', 'data_vencimento', 'log_data_inclusao', 'log_data_alteracao', 'log_data_registro', ])]
 class Lancamento extends Model
 {
-    public function user(): belongsTo 
+    public $timestamps = false;
+    protected $fillable = [
+        'descricao', 
+        'valor', 
+        'status_pago', 
+        'data_criacao', 
+        'data_vencimento', 
+        'log_data_inclusao', 
+        'log_data_alteracao', 
+        'log_versao_registro',
+        'categoria_id',
+        'frequencia_id',
+        'tipo_lancamento_id',
+        'user_id'
+    ];
+
+    public function user(): BelongsTo 
     {
         return $this->belongsTo(User::class);
     }
 
-    public function tipoLancamento(): belongsTo
+    public function tipoLancamento(): BelongsTo
     {
         return $this->belongsTo(TipoLancamento::class);
     }
 
-    public function categoria(): belongsTo
+    public function categoria(): BelongsTo
     {
         return $this->belongsTo(Categoria::class);
     }
 
-    public function centroCusto(): belongsTo
-    {
-        return $this->belongsTo(CentroCusto::class);
-    }
-
-    public function frequencia(): belongsTo
+    public function frequencia(): BelongsTo
     {
         return $this->belongsTo(Frequencia::class);
     }   

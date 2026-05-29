@@ -20,7 +20,7 @@
         </div>
 
         <script type="module">
-            $(document).ready(function() 
+            $(document).ready(function()
                 $('#alerta-sucesso').delay(4000).fadeOut(500, function() {
                     $(this).remove();
                 });
@@ -42,7 +42,7 @@
     <div class="container mx-auto mt-6 px-6">
         <ol class="flex items-center whitespace-nowrap ">
             <li class="inline-flex items-center">
-                <a class="flex items-center text-sm text-muted-foreground-1 hover:text-primary-focus focus:outline-hidden focus:text-primary-focus" href="#">
+                <a class="flex items-center text-sm text-muted-foreground-1 hover:text-primary-focus focus:outline-hidden focus:text-primary-focus" href="/">
                 Home
                 </a>
                 <svg class="shrink-0 mx-2 size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
@@ -54,7 +54,7 @@
 
         <div class="flex items-center gap-2">
             <h2 class="text-3xl font-bold tracking-tight text-[#615ACD] md:text-4xl">Lançamentos</h2>
-            
+
             <div class="relative inline-block text-left">
                 <button type="button" id="btn-dropdown-lancamento" class="flex items-center focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-[#615ACD] hover:text-[#FFA051] transition-colors cursor-pointer">
@@ -75,8 +75,8 @@
             </div>
         </div>
 
-        
-        
+
+
     </div>
 
     <div class="container mx-auto mt-6 px-6">
@@ -152,7 +152,7 @@
                     </th>
                 </tr>
             </thead>
-           
+
 
             <thead class="bg-[#F8F8FF] text-[#131047]">
                 <tr>
@@ -169,14 +169,14 @@
             <tbody id="tabela-lancamentos">
                 @foreach ($lancamentos as $lancamento)
                     <tr class="border-t linha-lancamento" data-data="{{ \Carbon\Carbon::parse($lancamento->data_criacao)->format('Y-m') }}">
-                        
+
                         <td class="p-3">
-                            @if($lancamento->tipo_lancamento_id == 1) 
+                            @if($lancamento->tipo_lancamento_id == 1)
                                 <label class="inline-flex items-center cursor-pointer">
                                     <span class="text-sm text-gray-700">Não Paga</span>
 
                                     <input type="checkbox" class="sr-only peer switch-status" data-id="{{ $lancamento->id }}" {{ $lancamento->status_pago ? 'checked' : '' }}>
-                                    
+
                                     <div class="mx-3 w-9 h-5 bg-gray-300 rounded-full relative
                                                 peer-checked:bg-green-500
                                                 after:content-[''] after:absolute after:top-[2px] after:left-[2px]
@@ -196,31 +196,82 @@
                         <td class="p-3 font-semibold text-gray-900">R$ {{ number_format($lancamento->valor, 2, ',', '.') }}</td>
 
                         <td class="p-3 flex gap-2">
-                            <button class="p-2 rounded-md hover:bg-gray-100 transition group">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-[#615ACD] transition">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
-                            </button>
+                            @if($lancamento->tipo_lancamento_id == 1)
 
-                            <button class="p-2 rounded-md hover:bg-gray-100 transition group">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-blue-500 transition">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
-                                </svg>
-                            </button>
+                                <button class="p-2 rounded-md hover:bg-gray-100 transition group btn-abrir-modal-ver-despesa"
+                                        data-descricao="{{ $lancamento->descricao }}"
+                                        data-valor="{{ $lancamento->valor }}"
+                                        data-status="{{ $lancamento->status_pago ? 'true' : 'false' }}"
+                                        data-categoria="{{ $lancamento->categoria_id }}"
+                                        data-frequencia="{{ $lancamento->frequencia_id }}"
+                                        data-criacao="{{ \Carbon\Carbon::parse($lancamento->data_criacao)->format('Y-m-d') }}"
+                                        data-vencimento="{{ $lancamento->data_vencimento ? \Carbon\Carbon::parse($lancamento->data_vencimento)->format('Y-m-d') : '' }}">
+                                    
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-[#615ACD] transition">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </button>
 
-                            <button class="p-2 rounded-md hover:bg-red-50 transition group">
+                                <button class="p-2 rounded-md hover:bg-gray-100 transition group btn-abrir-modal-editar-despesa"
+                                        data-id="{{ $lancamento->id }}"
+                                        data-descricao="{{ $lancamento->descricao }}"
+                                        data-valor="{{ $lancamento->valor }}"
+                                        data-status="{{ $lancamento->status_pago ? 'true' : 'false' }}"
+                                        data-categoria="{{ $lancamento->categoria_id }}"
+                                        data-frequencia="{{ $lancamento->frequencia_id }}"
+                                        data-criacao="{{ \Carbon\Carbon::parse($lancamento->data_criacao)->format('Y-m-d') }}"
+                                        data-vencimento="{{ $lancamento->data_vencimento ? \Carbon\Carbon::parse($lancamento->data_vencimento)->format('Y-m-d') : '' }}">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-blue-500 transition">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
+                                    </svg>
+                                </button>
+
+                            @elseif ($lancamento->tipo_lancamento_id == 2)
+                                
+                                <button class="p-2 rounded-md hover:bg-gray-100 transition group btn-abrir-modal-ver-receita"
+                                        data-descricao="{{ $lancamento->descricao }}"
+                                        data-valor="{{ $lancamento->valor }}"
+                                        data-categoria="{{ $lancamento->categoria_id }}"
+                                        data-frequencia="{{ $lancamento->frequencia_id }}"
+                                        data-criacao="{{ \Carbon\Carbon::parse($lancamento->data_criacao)->format('Y-m-d') }}">
+                                    
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-[#615ACD] transition">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </button>
+
+                                <button class="p-2 rounded-md hover:bg-gray-100 transition group btn-abrir-modal-editar-receita"
+                                        data-id="{{ $lancamento->id }}"
+                                        data-descricao="{{ $lancamento->descricao }}"
+                                        data-valor="{{ $lancamento->valor }}"
+                                        data-categoria="{{ $lancamento->categoria_id }}"
+                                        data-frequencia="{{ $lancamento->frequencia_id }}"
+                                        data-criacao="{{ \Carbon\Carbon::parse($lancamento->data_criacao)->format('Y-m-d') }}">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-blue-500 transition">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
+                                    </svg>
+                                </button>
+                            @endif
+
+                            <button type="button" class="p-2 rounded-md hover:bg-red-50 transition group btn-abrir-modal-deletar" 
+                                    data-id="{{ $lancamento->id }}" 
+                                    data-descricao="{{ $lancamento->descricao }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-600 group-hover:text-red-500 transition">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                                 </svg>
                             </button>
+
                         </td>
 
                     </tr>
                 @endforeach
             </tbody>
 
-             
+
         </table>
     </div>
 
@@ -232,32 +283,149 @@
         @include('lancamentos.modais.criarDespesa')
     </div>
 
+    <div id="container-modal-editar-despesa" class="hidden">
+        @include('lancamentos.modais.editarDespesa')
+    </div>
+
+    <div id="container-modal-editar-receita" class="hidden">
+        @include('lancamentos.modais.editarReceita')
+    </div>
+
+    <div id="container-modal-deletar" class="hidden">
+        @include('lancamentos.modais.deletar')
+    </div>
+
+    <div id="container-modal-ver-despesa" class="hidden">
+        @include('lancamentos.modais.verDespesa')
+    </div>
+
+    <div id="container-modal-ver-receita" class="hidden">
+        @include('lancamentos.modais.verReceita')
+    </div>
+
+
+
     <script type="module">
         $(document).ready(function () {
-            
+
             $('#btn-dropdown-lancamento').on('click', function (event) {
                 event.stopPropagation();
                 $('#menu-dropdown-lancamento').toggleClass('hidden');
             });
 
             $(document).on('click', function (event) {
-                if (!$(event.target).closest('#btn-dropdown-lancamento').length && 
+                if (!$(event.target).closest('#btn-dropdown-lancamento').length &&
                     !$(event.target).closest('#menu-dropdown-lancamento').length) {
                     $('#menu-dropdown-lancamento').addClass('hidden');
                 }
             });
 
+            // Region Carregar Modal
             $('#btn-abrir-modal-despesa').on('click', function () {
-                $('#menu-dropdown-lancamento').addClass('hidden'); 
-                $('#container-modal-despesa').removeClass('hidden'); 
+                $('#menu-dropdown-lancamento').addClass('hidden');
+                $('#container-modal-despesa').removeClass('hidden');
             });
 
-            $('#btn-abrir-modal-receita').on('click', function () {
-                $('#menu-dropdown-lancamento').addClass('hidden'); 
-                $('#container-modal-receita').removeClass('hidden'); 
+            $('.btn-abrir-modal-receita').on('click', function () {
+                $('#menu-dropdown-lancamento').addClass('hidden');
+                $('#container-modal-receita').removeClass('hidden');
             });
 
-            // Fechar o Modal
+            $('.btn-abrir-modal-editar-despesa').on('click', function () {
+                const id = $(this).data('id');
+                const descricao = $(this).data('descricao');
+                const valor = $(this).data('valor');
+                const status = String($(this).data('status'));
+                const categoria = $(this).data('categoria');
+                const frequencia = $(this).data('frequencia');
+                const dataCriacao = $(this).data('criacao');
+                const dataVencimento = $(this).data('vencimento');
+
+                $('#form-editar-despesa').attr('action', '/lancamentos/despesa/editar/' + id);
+
+                $('#modal-descricao').val(descricao);
+                $('#modal-valor').val(valor);
+                $('#modal-status').val(status);
+                $('#modal-categoria').val(categoria);
+                $('#modal-frequencia').val(frequencia);
+                $('#modal-dataCriacao').val(dataCriacao);
+                $('#modal-dataVencimento').val(dataVencimento);
+
+                $('#menu-dropdown-lancamento').addClass('hidden');
+                $('#container-modal-editar-despesa').removeClass('hidden');
+            });
+
+            $('.btn-abrir-modal-editar-receita').on('click', function () {
+                const id = $(this).data('id');
+                const descricao = $(this).data('descricao');
+                const valor = $(this).data('valor');
+                const categoria = String($(this).data('categoria'));
+                const frequencia = String($(this).data('frequencia'));
+                const dataCriacao = $(this).data('criacao');
+
+                $('#form-editar-receita').attr('action', '/lancamentos/receita/editar/' + id);
+
+                $('#modal-editar-descricao-receita').val(descricao);
+                $('#modal-editar-valor-receita').val(valor);
+                $('#modal-editar-categoria-receita').val(categoria);
+                $('#modal-editar-frequencia-receita').val(frequencia);
+                $('#modal-editar-dataCriacao-receita').val(dataCriacao);
+
+                $('#menu-dropdown-lancamento').addClass('hidden');
+                $('#container-modal-editar-receita').removeClass('hidden');
+            });
+
+            $('.btn-abrir-modal-ver-despesa').on('click', function () {
+                const descricao = $(this).data('descricao');
+                const valor = $(this).data('valor');
+                const status = String($(this).data('status'));
+                const categoria = $(this).data('categoria');
+                const frequencia = $(this).data('frequencia');
+                const dataCriacao = $(this).data('criacao');
+                const dataVencimento = $(this).data('vencimento');
+
+                $('#modal-ver-descricao').val(descricao);
+                $('#modal-ver-valor').val(valor);
+                $('#modal-ver-status').val(status);
+                $('#modal-ver-categoria').val(categoria);
+                $('#modal-ver-frequencia').val(frequencia);
+                $('#modal-ver-dataCriacao').val(dataCriacao);
+                $('#modal-ver-dataVencimento').val(dataVencimento);
+
+                $('#menu-dropdown-lancamento').addClass('hidden');
+                $('#container-modal-ver-despesa').removeClass('hidden');
+            });
+
+            $('.btn-abrir-modal-deletar').on('click', function () {
+                const id = $(this).data('id');
+                const descricao = $(this).data('descricao');
+
+                $('#form-deletar-lancamento').attr('action', '/lancamentos/deletar/' + id);
+                
+                $('#texto-descricao-deletar').text(descricao);
+                $('#container-modal-deletar').removeClass('hidden');
+            });
+
+            $('.btn-abrir-modal-ver-receita').on('click', function () {
+                const descricao = $(this).data('descricao');
+                const valor = $(this).data('valor');
+                const categoria = String($(this).data('categoria'));
+                const frequencia = String($(this).data('frequencia'));
+                const dataCriacao = $(this).data('criacao');
+
+                $('#modal-ver-descricao-receita').val(descricao);
+                $('#modal-ver-valor-receita').val(valor);
+                $('#modal-ver-categoria-receita').val(categoria);
+                $('#modal-ver-frequencia-receita').val(frequencia);
+                $('#modal-ver-dataCriacao-receita').val(dataCriacao);
+
+                $('#menu-dropdown-lancamento').addClass('hidden');
+                $('#container-modal-ver-receita').removeClass('hidden');
+            });
+            // Endregion Carregar Modal
+            
+
+            // Region Fechar Modal
             $(document).on('click', '#btn-fechar-modal', function () {
                 $('#container-modal-despesa').addClass('hidden');
             });
@@ -266,6 +434,27 @@
                 $('#container-modal-receita').addClass('hidden');
             });
 
+            $(document).on('click', '#btn-fechar-modal-editar-despesa', function () {
+                $('#container-modal-editar-despesa').addClass('hidden');
+            });
+
+            $('#btn-fechar-modal-editar-receita').on('click', function() {
+                $('#container-modal-editar-receita').addClass('hidden');
+            });
+
+            $('#btn-fechar-modal-deletar').on('click', function() {
+                $('#container-modal-deletar').addClass('hidden');
+            });
+
+            $('#btn-fechar-modal-ver-despesa').on('click', function() {
+                $('#container-modal-ver-despesa').addClass('hidden');
+            });
+
+            $('#btn-fechar-modal-ver-receita').on('click', function() {
+                $('#container-modal-ver-receita').addClass('hidden');
+            });
+            // Endregion Fechar Modal
+    
 
             // filtro
             $('#search').on('keyup', function() {
@@ -273,7 +462,7 @@
 
                 $('#tabela-lancamentos .linha-lancamento').each(function() {
                     var textoLinha = $(this).find('.coluna-busca').text().toLowerCase();
-                    
+
                     if (textoLinha.indexOf(termoBusca) > -1) {
                         $(this).show();
                     } else {
@@ -284,8 +473,8 @@
 
             $('.switch-status').on('change', function() {
                 var idLancamento = $(this).data('id');
-                var isChecked = $(this).is(':checked') ? 1 : 0; 
-                var token = $('meta[name="csrf-token"]').attr('content'); 
+                var isChecked = $(this).is(':checked') ? 1 : 0;
+                var token = $('meta[name="csrf-token"]').attr('content');
 
                 $.ajax({
                     url: '/lancamentos/atualizar-status/' + idLancamento,
@@ -296,14 +485,14 @@
                     },
                     error: function(error) {
                         alert('Erro ao atualizar o status. Tente novamente.');
-                        $(this).prop('checked', !isChecked); 
+                        $(this).prop('checked', !isChecked);
                     }
                 });
             });
 
             //Parte mês
             const mesesNomes = [
-                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
             ];
 
@@ -312,11 +501,11 @@
 
             function aplicarFiltroMes() {
                 let ano = dataFiltroAtual.getFullYear();
-                let mes = dataFiltroAtual.getMonth(); 
+                let mes = dataFiltroAtual.getMonth();
 
                 $('#label-mes-atual').text(mesesNomes[mes] + ' de ' + ano);
 
-                // Formata o mês 
+                // Formata o mês
                 let mesFormatado = String(mes + 1).padStart(2, '0');
                 let chaveAnoMes = ano + '-' + mesFormatado;
 
@@ -334,7 +523,7 @@
                     }
                 });
 
-                // Se não houver nenhum lançamento exibe uma mensagem 
+                // Se não houver nenhum lançamento exibe uma mensagem
                 $('#linha-vazia-feedback').remove();
                 if (totalLinhasVisiveis === 0) {
                     $('#tabela-lancamentos').append(
@@ -343,7 +532,7 @@
                 }
             }
 
-            // Executa o filtro 
+            // Executa o filtro
             aplicarFiltroMes();
 
             // Mês Anterior
@@ -360,7 +549,7 @@
                 aplicarFiltroMes();
             });
 
-            // Abrir/Fechar o Dropdown 
+            // Abrir/Fechar o Dropdown
             $('#btn-dropdown-meses').on('click', function(e) {
                 e.stopPropagation();
                 $('#dropdown-meses').toggleClass('hidden');
@@ -373,7 +562,7 @@
             $('.item-mes-select').on('click', function(e) {
                 e.stopPropagation();
                 let mesSelecionado = $(this).data('mes');
-                
+
                 dataFiltroAtual.setMonth(mesSelecionado);
                 aplicarFiltroMes();
                 $('#dropdown-meses').addClass('hidden'); // Fecha o menu
@@ -381,7 +570,7 @@
 
 
 
-            
+
         });
     </script>
 @endsection

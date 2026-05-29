@@ -91,6 +91,78 @@ class LancamentoController extends Controller
         return redirect()->route('user.lancamentos')->with('sucesso', 'Receita registrada com sucesso!');
     }
 
+    public function editarDespesa(Request $request, $id) {
+
+        $dadosValidados = $request->validate([
+            'descricao'      => 'required|string|max:255',
+            'valor'          => 'required|numeric|min:0',
+            'status'         => 'required|string', // Vem como 'true' ou 'false' do select
+            'categoria'      => 'required|integer',
+            'frequencia'     => 'required|integer',
+            'dataCriacao'    => 'required|date',
+            'dataVencimento' => 'required|date',
+        ]);
+
+        $lancamento = Lancamento::where('id', $id)
+                                ->where('user_id', auth()->id())
+                                ->firstOrFail();
+
+        $lancamento->descricao = $dadosValidados['descricao'];
+        $lancamento->valor = $dadosValidados['valor'];
+
+        $lancamento->status_pago = filter_var($dadosValidados['status'], FILTER_VALIDATE_BOOLEAN); 
+        
+        $lancamento->categoria_id = $dadosValidados['categoria'];
+        $lancamento->frequencia_id = $dadosValidados['frequencia'];
+        $lancamento->data_criacao = $dadosValidados['dataCriacao'];
+        $lancamento->data_vencimento = $dadosValidados['dataVencimento'];
+
+        $lancamento->log_data_alteracao = \Carbon\Carbon::now();
+        $lancamento->log_versao_registro += 1;
+
+        $lancamento->save();
+
+        return redirect()->route('user.lancamentos')->with('sucesso', 'Despesa atualizada com sucesso!');
+    }
+
+    public function editarReceita(Request $request, $id)
+    {
+        $dadosValidados = $request->validate([
+            'descricao'   => 'required|string|max:255',
+            'valor'       => 'required|numeric|min:0',
+            'categoria'   => 'required|integer',
+            'frequencia'  => 'required|integer',
+            'dataCriacao' => 'required|date',
+        ]);
+
+        $lancamento = Lancamento::where('id', $id)
+                                ->where('user_id', auth()->id())
+                                ->firstOrFail();
+
+        $lancamento->descricao = $dadosValidados['descricao'];
+        $lancamento->valor = $dadosValidados['valor'];
+        $lancamento->categoria_id = $dadosValidados['categoria'];
+        $lancamento->frequencia_id = $dadosValidados['frequencia'];
+        $lancamento->data_criacao = $dadosValidados['dataCriacao'];
+
+        $lancamento->log_data_alteracao = \Carbon\Carbon::now();
+        $lancamento->log_versao_registro += 1;
+
+        $lancamento->save();
+
+        return redirect()->route('user.lancamentos')->with('sucesso', 'Receita atualizada com sucesso!');
+    }
+
+    public function deletar($id)
+    {
+        $lancamento = Lancamento::where('id', $id)
+                                ->where('user_id', auth()->id())
+                                ->firstOrFail();
+
+        $lancamento->delete();
+
+        return redirect()->route('user.lancamentos')->with('sucesso', 'Lançamento excluído com sucesso!');
+    }
 
 
 }

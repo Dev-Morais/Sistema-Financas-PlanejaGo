@@ -42,14 +42,22 @@ Route::get('/calculadora', function () {
 })->name('calculadora');
 
 
-    Route::get('/lancamentos', [LancamentoController::class, 'index'])->name('user.lancamentos');
-
-    Route::post('/lancamentos/despesa', [LancamentoController::class, 'criaDespesa'])->name('lancamentos.criaDespesa');
-
-    Route::post('/lancamentos/atualizar-status/{id}', [LancamentoController::class, 'atualizarStatus'])->name('lancamentos.atualizarStatus');
-
-    Route::post('/lancamentos/receita', [LancamentoController::class, 'criaReceita'])->name('lancamentos.criaReceita');
+// Lançamentos organizados e agrupados
+Route::prefix('lancamentos')->controller(LancamentoController::class)->group(function () {
+    Route::get('/', 'index')->name('user.lancamentos');
+    Route::delete('/deletar/{id}', 'deletar')->name('lancamentos.deletar');
     
+    //despesa
+    Route::post('/despesa', 'criaDespesa')->name('lancamentos.criaDespesa');
+    Route::post('/atualizar-status/{id}', 'atualizarStatus')->name('lancamentos.atualizarStatus');
+    Route::post('/despesa/editar/{id}', 'editarDespesa')->name('lancamentos.editarDespesa');
+    Route::post('/despesa/ver/{id}', 'verDespesa')->name('lancamentos.verDespesa');
+    
+    //receita
+    Route::post('/receita', 'criaReceita')->name('lancamentos.criaReceita');
+    Route::post('/receita/editar/{id}', 'editarReceita')->name('lancamentos.editarReceita');
+    Route::post('/receita/ver/{id}', 'verReceita')->name('lancamentos.verReceita');
+});
   
 
   

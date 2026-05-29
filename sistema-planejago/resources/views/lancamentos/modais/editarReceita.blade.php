@@ -1,0 +1,67 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+    <div class="w-full max-w-lg p-6 bg-white shadow-xl sm:p-8 rounded-xl">
+        
+        <form id="form-editar-receita" action="" method="POST" class="space-y-5">
+            @csrf
+            
+            <div class="mb-6 text-center">
+                <h2 class="text-2xl font-bold tracking-tight text-[#615ACD] md:text-3xl">Editar Receita</h2>
+                <p class="mt-1 text-sm text-gray-500">Altere os dados abaixo e salve para atualizar a receita.</p>
+            </div>
+
+            <div>
+                <label for="modal-editar-descricao-receita" class="block mb-1.5 text-sm font-medium text-gray-700">Descrição</label>
+                <input type="text" id="modal-editar-descricao-receita" name="descricao" class="block w-full px-3 py-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-[#615ACD] focus:border-[#615ACD]" required />
+            </div>
+
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div>
+                    <label for="modal-editar-valor-receita" class="block mb-1.5 text-sm font-medium text-gray-700">Valor</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <span class="text-gray-500 sm:text-sm">R$</span>
+                        </div>
+                        <input type="number" step="0.01" id="modal-editar-valor-receita" name="valor" class="block w-full py-2.5 pl-9 pr-3 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-[#615ACD] focus:border-[#615ACD]" required />
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="modal-editar-dataCriacao-receita" class="block mb-1.5 text-sm font-medium text-gray-700">Data da Criação</label>
+                    <input type="date" id="modal-editar-dataCriacao-receita" name="dataCriacao" class="block w-full px-3 py-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-[#615ACD] focus:border-[#615ACD]" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div>
+                    <label for="modal-editar-categoria-receita" class="block mb-1.5 text-sm font-medium text-gray-700">Categoria</label>
+                    <select id="modal-editar-categoria-receita" name="categoria" class="block w-full px-3 py-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-[#615ACD] focus:border-[#615ACD]" required>
+                        <option value="" disabled>Selecione</option>
+                        <option value="4">Salário</option>
+                        <option value="5">Investimentos</option>
+                        <option value="6">Empréstimos</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="modal-editar-frequencia-receita" class="block mb-1.5 text-sm font-medium text-gray-700">Frequência</label>
+                    <select id="modal-editar-frequencia-receita" name="frequencia" class="block w-full px-3 py-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-[#615ACD] focus:border-[#615ACD]" required>
+                        <option value="" disabled>Selecione</option>
+                        <option value="1">Não se repete</option>
+                        <option value="2">Diariamente</option>
+                        <option value="3">Semanalmente</option>
+                        <option value="4">Mensalmente</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-3 pt-5 mt-6 border-t border-gray-200">
+                <button type="button" id="btn-fechar-modal-editar-receita" class="px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-gray-200">
+                    Cancelar
+                </button>
+                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white transition-colors bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 shadow-md">
+                    Salvar Receita
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

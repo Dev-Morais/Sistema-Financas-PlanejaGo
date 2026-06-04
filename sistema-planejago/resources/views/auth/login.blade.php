@@ -18,23 +18,23 @@
 
 <div class="relative flex flex-col justify-center pt-12 gap-6 items-center w-full h-full"> 
 
-    <div class="absolute top-0 right-0 w-1/3 max-w-[200px] md:max-w-[300px] pointer-events-none -z-10">
-        <img src="{{ asset('assets/images/FlorInvertida.png') }}" alt="Ilustração Topo" class="w-full h-auto object-contain">
+    <div class="absolute top-0 right-0 w-[15vw] min-w-[120px] max-w-[400px] pointer-events-none -z-10">
+        <img src="{{ asset('assets/images/FlorInvertida.png') }}" alt="Ilustração Flor Invertida" class="w-full h-auto object-contain">
     </div>
 
-    <div class="absolute bottom-0 left-0 w-1/2 max-w-[250px] md:max-w-[400px] pointer-events-none -z-10">
+    <div class="absolute bottom-0 left-0 w-[20vw] min-w-[120px] max-w-[400px] pointer-events-none -z-10">
         <img src="{{ asset('assets/images/flor1.png') }}" alt="Ilustração Flor 1" class="w-full h-auto object-contain drop-shadow-sm">
     </div>
 
     <h1 class="text-5xl font-bold text-[#615ACD]">Entre na sua Conta </h1>
-    <div class=" flex flex-col items-center w-full h-full pt-24">
+    <div class=" flex flex-col items-center w-full h-full pt-14 xl:pt-24 ">
         <form action="{{ route('login.store') }} " method='POST' >
             
             @error('error')
                 <span>{{ $message }}</span> 
             @enderror
 
-            <div class="flex flex-col w-fit border border-gray-300 rounded-md p-4 gap-2">
+            <div class="flex flex-col w-full max-w-sm sm:w-87.5 border border-gray-300 bg-white shadow-lg rounded-xl p-6 md:p-8 gap-4">
                 @csrf    
                 <div>
                     <label class="block mb-1.5 text-lg font-medium text-gray-700">Email</label>

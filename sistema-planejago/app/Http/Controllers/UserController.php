@@ -22,14 +22,16 @@ class UserController extends Controller
             'password' => 'required|min:8',
             'password_confirmation' => 'required|same:password'
         ], [
-            'name.min' => 'Insira um nome maior que 3 caracteres',
-            'name.required' => 'Esse campo é obrigatório',
-            'data_nascimento' => 'Informe uma data',
-            'email.required' => 'Esse campo de Email é obrigatório',
-            'email.email' => 'Insira um Email valido',
-            'email.unique' => 'Já existe alguém cadastrado com esse email',
-            'password' => 'A senha é um Campo obrigatório',
-            'password_confirmation' => 'Digite a mesma senha',
+            'name.min'                  => 'Insira um nome maior que 3 caracteres',
+            'name.required'             => 'Esse campo é obrigatório',
+            'data_nascimento.required'  => 'Informe uma data',
+            'data_nascimento.date'      => 'Informe uma data válida',
+            'email.required'            => 'Esse campo de Email é obrigatório',
+            'email.email'               => 'Insira um Email valido',
+            'email.unique'              => 'Já existe alguém cadastrado com esse email',
+            'password.required'         => 'A senha é um Campo obrigatório',
+            'password.min'              => 'A senha deve ter no mínimo 8 caracteres',
+            'password_confirmation'     => 'Digite a mesma senha',
         ]);
         
         $user = User::create([

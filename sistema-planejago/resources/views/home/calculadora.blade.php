@@ -17,8 +17,8 @@
         <h1 class="text-2xl font-bold text-[#2C2966] mb-6">Calculadora</h1>
 
         <div class="w-full">
-            <input type="radio" id="tab-juros" name="abas_calculadora" class="hidden peer/juros" checked>
-            <input type="radio" id="tab-comum" name="abas_calculadora" class="hidden peer/comum">
+            <input type="radio" id="tab-juros" name="abas_calculadora" class="hidden peer/juros">
+            <input type="radio" id="tab-comum" name="abas_calculadora" class="hidden peer/comum" checked>
 
             <div class="bg-gray-200/80 p-1 rounded-xl inline-flex items-center space-x-1 mb-8">
                 <label for="tab-comum" class="px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center space-x-2.5 cursor-pointer text-gray-600 hover:text-gray-900 peer-checked/comum:bg-white peer-checked/comum:text-[#2C2966] peer-checked/comum:shadow-sm">
@@ -26,7 +26,7 @@
                     <span>Comum</span>
                 </label>
                 <label for="tab-juros" class="px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center space-x-2.5 cursor-pointer text-gray-600 hover:text-gray-900 peer-checked/juros:bg-white peer-checked/juros:text-[#2C2966] peer-checked/juros:shadow-sm">
-                    <span id="dot-juros" class="w-2 h-2 rounded-full border border-yellow-500 bg-yellow-400 transition-all duration-300"></span>
+                    <span id="dot-juros" class="w-2 h-2 rounded-full border border-yellow-500 bg-transition-all duration-300"></span>
                     <span>Juros</span>
                 </label>
             </div>
@@ -126,6 +126,7 @@
 </div>
 
 <script>
+    let historicoCalculos =[];
     let meuGrafico = null;
     let expressaoComum = '';
     let calculoRealizado = false;
@@ -133,22 +134,37 @@
     function abrirModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function fecharModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-    function mostrarToastPersonalizado(modalId, mensagem) {
-        fecharModal(modalId);
-        const toast = document.getElementById('toast-alerta');
-        const toastMsg = document.getElementById('toast-mensagem');
-        toastMsg.innerText = mensagem;
-        toast.classList.remove('hidden');
-        setTimeout(() => {
-            toast.classList.remove('translate-y-[-20px]', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-        }, 10);
-        setTimeout(() => {
-            toast.classList.remove('translate-y-0', 'opacity-100');
-            toast.classList.add('translate-y-[-20px]', 'opacity-0');
-            setTimeout(() => { toast.classList.add('hidden'); }, 300);
-        }, 3000);
+    function mostrarToastPersonalizado(modalId, mensagem, tipo = 'sucesso') {
+    fecharModal(modalId);
+    const toast = document.getElementById('toast-alerta');
+    const toastMsg = document.getElementById('toast-mensagem');
+    const toastDiv = toast.querySelector('div');
+
+    // MUDANÇA: Forçamos a cor via estilo inline para garantir que mude
+    if (tipo === 'erro') {
+        toastDiv.style.backgroundColor = '#dc2626'; // Vermelho
+        toastDiv.style.borderColor = '#991b1b';     // Borda vermelha escura
+    } else {
+        toastDiv.style.backgroundColor = '#059669'; // Verde original
+        toastDiv.style.borderColor = '#065f46';     // Borda verde original
     }
+
+    toastMsg.innerText = mensagem;
+    toast.classList.remove('hidden');
+    
+    setTimeout(() => {
+        toast.classList.remove('translate-y-[-20px]', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+    }, 10);
+
+    setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-[-20px]', 'opacity-0');
+        setTimeout(() => { toast.classList.add('hidden'); }, 300);
+    }, 3000);
+}
+    
+    
 
     function calcularJuros() {
         const C = parseFloat(document.getElementById('valor_inicial').value) || 0;
@@ -159,7 +175,7 @@
         const tempoPeriodo = document.getElementById('tempo_periodo').value;
 
         if (C <= 0 || i <= 0 || t <= 0) {
-            alert('Por favor, preencha todos os campos com valores maiores que zero.');
+            mostrarToastPersonalizado('toast-alerta', 'Por favor, preencha todos os campos com valores maiores que zero.', 'erro');
             return;
         }
 
@@ -207,6 +223,14 @@
             data: { labels: labelsGrafico, datasets: [{ label: 'Evolução do Patrimônio', data: dadosGrafico, borderColor: '#4E44CE', backgroundColor: 'rgba(78, 68, 206, 0.1)', borderWidth: 3, fill: true, tension: 0.3, pointBackgroundColor: '#4E44CE' }] },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#E5E7EB' }, ticks: { callback: (v) => 'R$ ' + v.toFixed(0) } }, x: { grid: { display: false } } } }
         });
+        historicoCalculos.push({
+        label: `Cálculo ${historicoCalculos.length + 1}`,
+        valor: valorFinal
+    });
+    atualizarGraficoHistorico();
+        document.getElementById('valor_inicial').value = '';
+        document.getElementById('taxa_juros').value = '';
+        document.getElementById('periodo').value = '';
     }
 
     function addComum(caractere) {
@@ -282,6 +306,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+        gerenciarBolinhas();
         const ctx = document.getElementById('graficoJuros').getContext('2d');
         meuGrafico = new Chart(ctx, {
             type: 'line',
@@ -289,5 +314,25 @@
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
         });
     });
+    function atualizarGraficoHistorico() {
+    const ctx = document.getElementById('graficoJuros').getContext('2d');
+    if (meuGrafico) meuGrafico.destroy();
+    
+    meuGrafico = new Chart(ctx, {
+        type: 'bar', // Tipo barra para comparar vários cálculos
+        data: {
+            labels: historicoCalculos.map(h => h.label),
+            datasets: [{
+                label: 'Resultados',
+                data: historicoCalculos.map(h => h.valor),
+                backgroundColor: '#4E44CE'
+            }]
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false 
+        }
+    });
+}
 </script>
 @endsection

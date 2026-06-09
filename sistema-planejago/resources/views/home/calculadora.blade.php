@@ -13,8 +13,20 @@
 </div>
 
 <div class="container mx-auto p-4 md:p-6 min-h-screen bg-gray-50 text-gray-800">
+    <ol class="flex items-center whitespace-nowrap ">
+        <li class="inline-flex items-center">
+            <a class="flex items-center text-sm text-muted-foreground-1 hover:text-primary-focus focus:outline-hidden focus:text-primary-focus" href="/">
+                Home
+            </a>
+            <svg class="shrink-0 mx-2 size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </li>
+        <li class="inline-flex items-center text-sm font-semibold text-foreground truncate" aria-current="page">
+            Calculadora
+        </li>
+    </ol>
+
     <div class="max-w-6xl mx-auto">
-        <h1 class="text-2xl font-bold text-[#2C2966] mb-6">Calculadora</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-[#615ACD] md:text-4xl">Calculadora</h1>
 
         <div class="w-full">
             <input type="radio" id="tab-juros" name="abas_calculadora" class="hidden peer/juros">
@@ -47,7 +59,26 @@
                         <h3 class="text-sm font-bold text-gray-400 uppercase mb-2">Resultado</h3>
                         <div class="flex items-center justify-center space-x-2 mb-1">
                             <p class="text-2xl font-black text-[#4E44CE]" id="res_valor_final">Valor Final: R$ 0,00</p>
-                            <button type="button" onclick="abrirModal('modalDespesa')" class="text-[#4E44CE] hover:text-[#3b33a3] cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></button>
+                            
+                            <div class="relative inline-block text-left">
+                                <button type="button" class="btn-salvar-resultado text-[#4E44CE] hover:text-[#3b33a3] cursor-pointer focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </button>
+
+                                <div class="menu-dropdown-calculadora absolute right-0 z-40 hidden w-40 mt-2 origin-top-right bg-white border border-gray-100 rounded-md shadow-lg ring-1 ring-black/5 focus:outline-none">
+                                    <div class="py-1">
+                                        <button type="button" class="btn-calc-despesa block w-full px-4 py-2 text-sm text-left text-gray-700 transition hover:bg-gray-100 hover:text-[#615ACD]">
+                                            Nova Despesa
+                                        </button>
+                                        <button type="button" class="btn-calc-receita block w-full px-4 py-2 text-sm text-left text-gray-700 transition hover:bg-gray-100 hover:text-[#615ACD]">
+                                            Nova Receita
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="flex justify-center space-x-4 text-xs font-semibold text-gray-500 mb-6"><span>Total de Juros: <strong class="text-gray-700" id="res_total_juros">R$ 0,00</strong></span><span>Rendimento: <strong class="text-gray-700" id="res_rendimento">0%</strong></span></div>
                         <div class="h-48 w-full relative mt-4">
@@ -62,9 +93,29 @@
                     <div id="comum_expressao" class="text-xs text-gray-400 font-medium tracking-wide h-4"></div>
                     <div class="text-3xl font-bold text-[#2C2966] flex items-center justify-end space-x-2">
                         <span id="comum_resultado">0</span>
-                        <button type="button" onclick="abrirModal('modalReceita')" class="text-[#FFA051] hover:text-[#e08436] transition-colors cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></button>
+
+                        <div class="relative inline-block text-left">
+                            <button type="button" class="btn-salvar-resultado text-[#4E44CE] hover:text-[#3b33a3] cursor-pointer focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </button>
+
+                            <div class="menu-dropdown-calculadora absolute right-0 z-40 hidden w-40 mt-2 origin-top-right bg-white border border-gray-100 rounded-md shadow-lg ring-1 ring-black/5 focus:outline-none">
+                                <div class="py-1">
+                                    <button type="button" class="btn-calc-despesa block w-full px-4 py-2 text-sm text-left text-gray-700 transition hover:bg-gray-100 hover:text-[#615ACD]">
+                                        Nova Despesa
+                                    </button>
+                                    <button type="button" class="btn-calc-receita block w-full px-4 py-2 text-sm text-left text-gray-700 transition hover:bg-gray-100 hover:text-[#615ACD]">
+                                        Nova Receita
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+
                 <div class="grid grid-cols-5 gap-2.5 text-sm font-bold">
                     <button type="button" onclick="addComum('(')" class="p-3 bg-indigo-50/50 text-[#4E44CE] rounded-xl">(</button>
                     <button type="button" onclick="addComum(')')" class="p-3 bg-indigo-50/50 text-[#4E44CE] rounded-xl">)</button>
@@ -125,7 +176,79 @@
     </div>
 </div>
 
-<script>
+<div id="container-modal-receita" class="hidden">
+    @include('lancamentos.modais.criarReceita')
+</div>
+
+<div id="container-modal-despesa" class="hidden">
+    @include('lancamentos.modais.criarDespesa')
+</div>
+
+<script type="module">
+
+    $(document).ready(function () {
+        
+        // 1. Abre e fecha o dropdown da calculadora ao clicar no botão de +
+        $('.btn-salvar-resultado').on('click', function (event) {
+            event.stopPropagation();
+            $('.menu-dropdown-calculadora').not($(this).siblings('.menu-dropdown-calculadora')).addClass('hidden');
+            $(this).siblings('.menu-dropdown-calculadora').toggleClass('hidden');
+        });
+
+        // 2. Esconde o dropdown se o usuário clicar em qualquer outro lugar da página
+        $(document).on('click', function (event) {
+            if (!$(event.target).closest('.btn-salvar-resultado').length &&
+                !$(event.target).closest('.menu-dropdown-calculadora').length) {
+                $('.menu-dropdown-calculadora').addClass('hidden');
+            }
+        });
+
+        function obterValorCalculado(botaoClicado) {
+            let textoValor = "";
+            
+            if ($(botaoClicado).closest('.peer-checked\\/comum\\:block').length > 0) {
+                textoValor = $('#comum_resultado').text().trim();
+            } else {
+                textoValor = $('#res_valor_final').text().trim();
+            }
+
+            return textoValor
+                .replace('Valor Final: R$ ', '') 
+                .replace(/\./g, '')              
+                .replace(',', '.')               
+                .trim();
+        }
+
+        // 3. Clique em "Nova Despesa"
+        $(document).on('click', '.btn-calc-despesa', function () {
+            $('.menu-dropdown-calculadora').addClass('hidden');   
+            $('#container-modal-despesa').removeClass('hidden');  
+            
+            let valorLimpo = obterValorCalculado(this);
+            $('#container-modal-despesa #valor').val(valorLimpo); 
+            $('#container-modal-despesa #descricao').val('Despesa Calculadora');
+        });
+
+        // 4. Clique em "Nova Receita"
+        $(document).on('click', '.btn-calc-receita', function () {
+            $('.menu-dropdown-calculadora').addClass('hidden');   
+            $('#container-modal-receita').removeClass('hidden');  
+            
+            let valorLimpo = obterValorCalculado(this);
+            $('#container-modal-receita #valor_receita').val(valorLimpo); 
+            $('#container-modal-receita #descricao_receita').val('Rendimento Calculadora'); 
+        });
+
+        $(document).on('click', '#btn-fechar-modal', function () {
+            $('#container-modal-despesa').addClass('hidden');
+        });
+
+        $(document).on('click', '#btn-fechar-modal-receita', function () {
+            $('#container-modal-receita').addClass('hidden');
+        });
+    })
+
+
     let historicoCalculos =[];
     let meuGrafico = null;
     let expressaoComum = '';
